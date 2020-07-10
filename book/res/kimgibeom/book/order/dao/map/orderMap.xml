@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='kimgibeom.book.order.dao.map.OrderMap'>
+	<insert id='addOrder'>
+		insert into orders
+		values(order_num_seq.nextVal,#{userId},sysdate,#{order.status},#{order.totalPrice})
+	</insert>
+	
+	<select id='getOrder' parameterType='String' resultType='kimgibeom.book.order.domain.Order'>
+		select order_num orderNum
+		from orders
+		where user_id=#{userId}
+	</select>
+	
+	<update id='updateOrderStatus' parameterType='int'>
+		update orders
+		set status='배송완료'
+		where order_num=#{orderNum}
+	</update>
+	
+	<insert id='addOrderBook'>
+		insert into order_books
+		values(#{orderNum},#{bookIsbn},#{orderBook.count})
+	</insert>
+	
+	<delete id='delOrder' parameterType='int'>
+		delete orders
+		where order_num=#{orderNum}
+	</delete>
+	
+	<select id='getOrderInfos' resultMap='orderMap'>
+		select o.order_num,u.user_id,name,phone_number,address,title,writer,total_price,ob.count
+		from users u join orders o
+		on(u.user_id=o.user_id)
+		join order_books ob
+		on(o.order_num=ob.order_num)
+		join books b
+		on(ob.book_isbn=b.book_isbn)
+		order by o.order_num desc
+	</select>
+	
+	<select id='getPayCompleteOrders' resultMap='orderMap'>
+		select o.order_num,u.user_id,name,phone_number,address,title,writer,total_price,ob.count
+		from users u join orders o
+		on(u.user_id=o.user_id)
+		join order_books ob
+		on(o.order_num=ob.order_num)
+		join books b
+		on(ob.book_isbn=b.book_isbn)
+		where o.status='결제완료'
+		order by o.order_num desc
+	</select>
+	
+	<select id='getPayCompleteOrder' parameterType='int' resultMap='orderMap'>
+		select o.order_num,u.user_id,name,phone_number,address,title,writer,total_price,ob.count
+		from users u join orders o
+		on(u.user_id=o.user_id)
+		join order_books ob
+		on(o.order_num=ob.order_num)
+		join books b
+		on(ob.book_isbn=b.book_isbn)
+		where o.order_num=#{orderNum}
+		order by o.order_num desc
+	</select>
+	
+	<select id='searchUserOrderInfos' parameterType='String' resultMap='orderMap'>
+		select o.order_num,u.user_id,name,phone_number,address,title,writer,total_price,ob.count, b.book_isbn
+		from users u join orders o
+		on(u.user_id=o.user_id)
+		join order_books ob
+		on(o.order_num=ob.order_num)
+		join books b
+		on(ob.book_isbn=b.book_isbn)
+		where u.user_id like '%'||#{userId}||'%'
+		order by o.order_num desc
+	</select>
+	
+	<resultMap id='orderMap' type='kimgibeom.book.order.domain.Order'>
+		<id property='orderNum' column='order_num' />
+		<result property='totalPrice' column='total_price'/>
+		<association property='user' resultMap='userMap' />
+		<collection property='books' resultMap='bookMap' />
+		<collection property='order_books' resultMap='orderBookMap' />
+	</resultMap>
+	
+	<resultMap id='userMap' type='kimgibeom.book.user.domain.User'>
+		<id property='userId' column='user_id'/>
+		<result property='userName' column='name'/>
+		<result property='userPhoneNumber' column='phone_number'/>
+		<result property='userAddress' column='address'/>
+	</resultMap>
+	
+	<resultMap id='bookMap' type='kimgibeom.book.book.domain.Book'>
+		<result property='title' column='title'/>
+		<result property='writer' column='writer'/>
+	</resultMap>
+	
+	<resultMap id='orderBookMap' type='kimgibeom.book.order.domain.OrderBook'>
+		<id property='bookIsbn' column='book_isbn'/>
+		<result property='count' column='count'/>
+	</resultMap>
+	
+	<select id='getUserOrderInfos' parameterType='String' resultMap='userOrderMap'>
+		select o.order_num,o.order_date,o.total_price,b.title,b.price,ob.count,o.status, b.book_isbn
+		from users u join orders o
+		on(u.user_id=o.user_id)
+		join order_books ob
+		on(o.order_num=ob.order_num)
+		join books b
+		on(ob.book_isbn=b.book_isbn)
+		where u.user_id = #{userId}
+		order by o.order_num desc
+	</select>
+	
+	<resultMap id='userOrderMap' type='kimgibeom.book.order.domain.Order'>
+		<id property='orderNum' column='order_num' />
+		<result property='orderDate' column='order_date'/>
+		<result property='totalPrice' column='total_price'/>
+		<result property='status' column='status'/>
+		<association property='user' resultMap='userUserMap' />
+		<collection property='books' resultMap='userBookMap' />
+		<collection property='order_books' resultMap='userOrderBookMap' />
+	</resultMap>
+	
+	<resultMap id='userUserMap' type='kimgibeom.book.user.domain.User'>
+		<id property='userId' column='user_id'/>
+	</resultMap>
+	
+	<resultMap id='userBookMap' type='kimgibeom.book.book.domain.Book'>
+		<result property='title' column='title'/>
+		<result property='price' column='price'/>
+	</resultMap>
+	
+	<resultMap id='userOrderBookMap' type='kimgibeom.book.order.domain.OrderBook'>
+		<id property='bookIsbn' column='book_isbn'/>
+		<result property='count' column='count'/>
+	</resultMap>
+</mapper>

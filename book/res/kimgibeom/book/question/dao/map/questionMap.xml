@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='kimgibeom.book.question.dao.map.QuestionMap'>
+	<select id="getTotQuestions" resultType='kimgibeom.book.question.domain.Question'>
+		select question_num questionNum, user_id userId, title, content, reg_date regDate,
+		status, attach_name attachName
+		from questions 
+		order by question_num desc
+	</select>
+	
+	<select id='getQuestion' parameterType='int' resultType='kimgibeom.book.question.domain.Question'>
+		select question_num questionNum, user_id userId, title, content, reg_date regDate,
+		status, attach_name attachName
+		from questions where 
+		question_num = #{questionNum}
+	</select>
+	
+	<select id='searchUserId' parameterType='String' resultType='kimgibeom.book.question.domain.Question'>
+		select question_num questionNum, user_id userId, title, content, reg_date regDate,
+		status, attach_name attachName
+		from questions
+		where user_id like '%'||#{userId}||'%'
+		order by question_num desc
+	</select>
+	
+	<select id='searchTitle' parameterType='String' resultType='kimgibeom.book.question.domain.Question'>
+		select question_num questionNum, user_id userId, title, content, reg_date regDate,
+		status, attach_name attachName
+		from questions
+		where title like '%'||#{title}||'%'
+		order by question_num desc
+	</select>
+	
+	<insert id='addQuestion' parameterType='kimgibeom.book.question.domain.Question'>
+		insert into questions (question_num , user_id, title, content, reg_date, status, attach_name)
+		values (question_num_seq.nextval, #{userId}, #{title}, #{content}, #{regDate}, #{status}, #{attachName})
+	</insert>
+	
+	<update id='updateQuestion' parameterType='kimgibeom.book.question.domain.Question'>
+		update questions
+		set title = #{title}, content = #{content}, status = #{status}, attach_name = #{attachName}
+		where question_num = #{questionNum}
+	</update>
+
+	<delete id='delQuestion' parameterType='int'>
+		delete questions 
+		where question_num=#{questionNum}
+	</delete>
+	
+	<resultMap id='questionMap' type='kimgibeom.book.question.domain.Question'>
+		<id property='questionNum' column='question_num'/>
+		<result property='userId' column='user_id'/>
+		<result property='title' column='title'/>
+		<result property='content' column='content'/>
+		<result property='regDate' column='reg_date'/>
+		<result property='status' column='status'/>
+	</resultMap>
+</mapper>

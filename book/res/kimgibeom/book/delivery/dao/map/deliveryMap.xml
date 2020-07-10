@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='kimgibeom.book.delivery.dao.map.DeliveryMap'>
+ 	
+ 	<select id='getDelivery' parameterType='int' resultMap='dMap'>
+		select u.user_id, o.total_price, o.order_num, u.name, u.phone_number, u.address,
+   		OB.count, b.writer, b.title, d.delivery_num
+   		from deliveries d join orders o
+   		on d.order_num = o.order_num
+   		join order_books OB
+		on o.order_num = ob.order_num
+		join books b
+		on b.book_isbn = ob.book_isbn
+		join users u
+		on u.user_id = o.user_id
+		where o.order_num = #{orderNum}
+	</select>
+	
+	<insert id='addDelivery'>
+		insert into deliveries
+		values (#{delivery.deliveryNum}, #{orderNum}, #{delivery.company}, #{delivery.price})
+	</insert>
+
+ 	<!-- 관리자 페이지 배송완료 쿼리(김기범) -->
+	<select id='getDeliveryCompleteList' resultMap='dMap'>
+		select d.delivery_num, d.company, d.price,o.order_num,  u.user_id, u.name, u.phone_number, u.address, o.total_price
+   		, b.title, b.writer,OB.count
+   		from deliveries d join orders o
+   		on d.order_num = o.order_num
+   		join order_books OB
+		on o.order_num = ob.order_num
+		join books b
+		on b.book_isbn = ob.book_isbn
+		join users u
+		on u.user_id = o.user_id
+		where o.status = '배송완료'
+		order by o.order_num desc
+	</select>
+	
+	<select id='searchUserDeliveryComplete' parameterType='String' resultMap='dMap'>
+		select d.delivery_num, d.company, d.price,o.order_num,  u.user_id, u.name, u.phone_number, u.address, o.total_price
+   		, b.title, b.writer,OB.count
+   		from deliveries d join orders o
+   		on d.order_num = o.order_num
+   		join order_books OB
+		on o.order_num = ob.order_num
+		join books b
+		on b.book_isbn = ob.book_isbn
+		join users u
+		on u.user_id = o.user_id
+		where o.status = '배송완료'
+		and u.user_id like '%'||#{userId}||'%'
+		order by o.order_num desc
+	</select>
+	
+	<select id='searchUserPayComplete' parameterType='String' resultMap='dMap'>
+		select d.delivery_num, d.company, d.price,o.order_num,  u.user_id, u.name, u.phone_number, u.address, o.total_price
+   		, b.title, b.writer,OB.count
+   		from deliveries d join orders o
+   		on d.order_num = o.order_num
+   		join order_books OB
+		on o.order_num = ob.order_num
+		join books b
+		on b.book_isbn = ob.book_isbn
+		join users u
+		on u.user_id = o.user_id
+		where o.status = '배송완료'
+		and u.user_id like '%'||#{userId}||'%'
+		order by o.order_num desc
+	</select>
+
+	<resultMap id="dMap" type="kimgibeom.book.delivery.domain.Delivery">
+		<id		property="deliveryNum" column="delivery_num"/>
+		<result property="company" column="company"/>
+		<result property="price" column="price"/>
+		<association property="user" resultMap="uMap"/>
+		<association property="order" resultMap="oMap"/>
+		<collection property="orderBooks" resultMap="obMap"/>
+		<collection property="books" resultMap="bMap"/>
+	</resultMap>
+	
+	<resultMap id="oMap" type="kimgibeom.book.order.domain.Order">
+		<id property="orderNum" column="order_num"/>
+		<result property="totalPrice" column="total_price"/>
+	</resultMap>
+	
+	<resultMap id="obMap" type="kimgibeom.book.order.domain.OrderBook">
+		<id property='bookIsbn' column='book_isbn'/>
+		<result property="count" column="count"/>
+	</resultMap>
+	
+	<resultMap id="uMap" type="kimgibeom.book.user.domain.User">
+		<id property="userId" column="user_id"/>
+		<result property="userName" column="name"/>
+		<result property="userPhoneNumber" column="phone_number"/>
+		<result property="userAddress" column="address"/>
+	</resultMap>
+	
+	<resultMap id="bMap" type="kimgibeom.book.book.domain.Book">
+		<result property="title" column="title"/>
+		<result property="writer" column="writer"/>
+	</resultMap>
+</mapper>

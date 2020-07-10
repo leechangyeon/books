@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='kimgibeom.book.book.dao.map.BookMap'>
+	<select id='getBook' parameterType='String'
+		resultType='kimgibeom.book.book.domain.Book'>
+		select book_isbn bookIsbn, title, writer, publisher, content, price, count
+		from books
+		where book_isbn = #{bookIsbn, jdbcType=VARCHAR}
+	</select>
+
+	<select id='getIsbns'
+		resultType='kimgibeom.book.book.domain.Book'>
+		select book_isbn bookIsbn
+		from books
+	</select>
+
+	<update id='updateBookCnt'>
+		update books
+		set count=(select count from books where book_isbn=#{bookIsbn})-#{orderBookCnt}
+		where book_isbn=#{bookIsbn}
+	</update>
+	
+	<select id='findBooks' parameterType='String' resultType='kimgibeom.book.book.domain.Book'>
+		select book_isbn bookIsbn, title, writer, publisher, content, price, count
+		from books
+		where title like '%'||#{searchBookTitle}||'%'
+	</select>
+	
+	<insert id='addBook' parameterType='kimgibeom.book.book.domain.Book'>
+		insert into books (book_isbn , title, writer, publisher, content, price, count)
+		values (books_isbn_seq.nextVal, #{title}, #{writer}, #{publisher}, #{content}, #{price}, #{count})
+	</insert>
+	
+	<delete id='delBook' parameterType='String'>
+		delete books
+		where book_isbn=#{bookIsbn}
+	</delete>
+	
+	<update id='modifyBook'>
+		update books
+		set title=#{book.title}, writer=#{book.writer}, publisher=#{book.publisher}, content=#{book.content}, price=#{book.price}, count=#{book.count}
+		where book_isbn=#{bookIsbn}
+	</update>
+	
+	<select id="searchBook" parameterType='String'
+		resultType='kimgibeom.book.book.domain.Book'>
+		select book_isbn bookIsbn, title, writer, publisher, content, price, count
+		from books
+		where title like '%'||#{title}||'%'
+	</select>
+	
+	<insert id='addBookImg'>
+		insert into book_imgs
+		values(books_isbn_seq.currVal,#{bookImg.bookImgName})
+	</insert>
+	
+	<select id='getBookImgName' parameterType='String' resultType='kimgibeom.book.book.domain.BookImg'>
+		select book_img_name bookImgName
+		from book_imgs
+		where book_isbn = #{bookIsbn}
+	</select>
+	
+	<update id='modifyBookImgName'>
+		update book_imgs
+		set book_img_name = #{bookImgName}
+		where book_isbn=#{bookIsbn}
+	</update>
+</mapper>

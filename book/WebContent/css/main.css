@@ -1,0 +1,67 @@
+/* 초기화 */
+html {overflow-y:scroll;font:'nanum' !important;}
+body{margin:0 auto; padding:0;min-width:1000px;max-width:100%;}
+html, h1, h2, h3, h4, h5, h6, form, fieldset, img {margin:0;padding:0;border:0}
+h1, h2, h3, h4, h5, h6 {font-size:1em;font-weight:normal;}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display:block}
+ul{list-style:none;margin:0;padding:0}
+a{text-decoration:none;color: inherit;display:block}
+a:hover{text-decoration:none;}
+
+/* top */
+.top{width:100%; height:40px; background-color:#42a5be; overflow:hidden; margin:0 auto;}
+.top a{float:right; margin:12px 8px; font-size:12px; color:#fff;}
+.top div{width:1000px;margin:0 auto;}
+
+/* search */
+.tophead{width:1000px; overflow:hidden; margin:0 auto; text-align:center;}
+.tophead .logo{margin:34px 130px 34px 0; font-size:18px; font-weight:bold; width: 220px;}
+.tophead .logo img{width:100%; height:100%}
+.tophead .logo, .sear{float:left;}
+
+.sear{margin:40px 0;}
+.sear .search{height:45px; width:550px; border:1px solid #42a5be;margin:0 auto; overflow:hidden;}
+.sear .search input{font-size:14px; width:325px; padding:15px; border:0px; outline:none; float:left;}
+.sear .search button{width:70px; height:100%; border:0px; background:#42a5be; outline:none; float:right; color:#ffffff; font-size:14px;}
+.sear .search button{height:45px;}
+.sear .search form select{height:45px; border:0px;padding:0 10px;float:left;}
+
+/* nav */
+.nav{width:100%; height:45px; border-top:1px solid #ccc; border-bottom:1px solid #ccc;}
+.nav ul{width:1000px; margin:0 auto;}
+.nav ul .menu{float:left; font-weight:bold; color:#666;}
+.nav ul .menu a{padding:12px 0;}
+.nav ul .menu1{position:relative;}
+.nav ul .menu1 ul{width:140px; position:absolute; top:45.5px; left:0; display:none; background-color:#fff; font-size:14px; z-index:999;}
+.nav ul .menu1:hover ul{display:block;}
+.nav ul .menu1 ul li{border:1px solid #ccc;}
+.nav ul .menu1 ul li:hover>a{background-color:#f3f3f3;}
+.nav ul .menu1 ul li:nth-child(2){border-top:0px;}
+.nav ul li{width:140px; text-align:center;}
+.nav ul li:hover>a{color:#42a5be;}
+
+/* left메뉴 */
+.leftmenu{width:160px;}
+.leftmenu div{width:160px; height:20px; background-color:#42a5be; color:#fff; font-size:20px; text-align:center; padding:40px 0}
+.leftmenu ul li{border:1px solid #d1d1d1; font-size:14px;}
+.leftmenu ul li:hover a{width:150px; background:#f3f3f3; color:#42a5be;}
+.leftmenu ul li a{width:160px; padding:10px 0 10px 10px; width:150px;}
+.leftmenu ul .action a{background:#f3f3f3; color:#42a5be;}
+.leftmenu ul li:nth-child(1){border-bottom:0px;}
+.cont{margin:0 auto; width:1000px; overflow:hidden; margin-top:60px; margin-bottom:80px;}
+.cont .leftmenu, .content{float:left;}
+
+.leftmenu_3 ul li:nth-child(2){border-bottom:0px;}
+.leftmenu_3 ul li:nth-child(3){border-bottom:0px;}
+
+/* footer */
+footer{width:100%; height:95px; background-color:#ccc; margin-top:50px; color:#666}
+footer .fot{width:1000px; margin:0 auto; overflow:hidden;}
+footer .fot div{float:left;}
+footer .fot div:nth-child(1){font-size:18px; margin:18px 0 0 0;}
+footer .fot div:nth-child(2){margin:24px 0 0 50px; font-size:12px;}
+footer .fot .logo img{width:100%; height:100%;}
+footer .fot .logo {width:220px;}
+
+
+.confirm{background-color:#42a5be !important;}

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='kimgibeom.book.user.dao.map.UserMap'>
+	<select id="getUser" parameterType='String'
+		resultType='kimgibeom.book.user.domain.User'>
+		select user_id userId ,password userPw,name userName,
+		birth_date userBirthDate,
+		gender userGender, e_mail
+		userEmail,phone_number userPhoneNumber,
+		address userAddress, reg_date
+		userRegDate
+		from users
+		where user_id = #{userId}
+	</select>
+
+	<select id='getUsers'
+		resultType='kimgibeom.book.user.domain.User'>
+		select user_id userId ,password userPw,name userName,
+		birth_date userBirthDate,
+		gender userGender, e_mail
+		userEmail,phone_number userPhoneNumber,
+		address userAddress, reg_date
+		userRegDate
+		from users
+	</select>
+
+	<insert id='addUser'
+		parameterType='kimgibeom.book.user.domain.User'>
+		insert into users
+		values(#{userId},#{userPw},#{userName},#{userBirthDate},#{userGender},#{userEmail},
+		#{userPhoneNumber},#{userAddress},sysdate)
+	</insert>
+
+	<select id='getUserIds'
+		resultType='kimgibeom.book.user.domain.User'>
+		select user_id userId
+		from users
+	</select>
+
+	<update id='updateUserId'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set user_id=#{changedUserId}
+		where user_id
+		=#{userId}
+	</update>
+
+	<update id='updateUserPw'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set password=#{userPw}
+		where user_id
+		=#{userId}
+	</update>
+	<update id='updateUserName'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set name=#{userName}
+		where user_id =#{userId}
+	</update>
+	<update id='updateUserPhoneNumber'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set phone_number=#{userPhoneNumber}
+		where
+		user_id =#{userId}
+	</update>
+	<update id='updateUserEmail'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set e_mail=#{userEmail}
+		where user_id
+		=#{userId}
+	</update>
+	<update id='updateUserAddress'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set address=#{userAddress}
+		where user_id
+		=#{userId}
+	</update>
+	<update id='updateUserGender'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set gender=#{userGender}
+		where user_id
+		=#{userId}
+	</update>
+	<update id='updateUserBirthDate'
+		parameterType='kimgibeom.book.user.domain.User'>
+		update users
+		set birth_date=#{userBirthDate}
+		where user_id
+		=#{userId}
+	</update>
+
+	<delete id='delUser' parameterType='String'>
+		delete users
+		where
+		user_id=#{userId}
+	</delete>
+
+	<select id="searchUser" parameterType='String'
+		resultType='kimgibeom.book.user.domain.User'>
+		select user_id userId ,password userPw,name userName,
+		birth_date userBirthDate,
+		gender userGender, e_mail
+		userEmail,phone_number userPhoneNumber,
+		address userAddress, reg_date
+		userRegDate
+		from users
+		where user_id like '%'||#{userId}||'%'
+	</select>
+
+</mapper>
